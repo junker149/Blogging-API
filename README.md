@@ -48,7 +48,7 @@ A brief description of your project:
     ```bash
     npm install
 
-4. Setup environment variables:
-Create a ```.env``` file in the root directory and add:
-    
+4. Create a ```.env``` file in the root directory and add:
+    ```bash
+    DATABASE_URL=your_database_url
     
