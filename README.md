@@ -52,3 +52,10 @@ A brief description of your project:
     ```bash
     DATABASE_URL=your_database_url
     
+5. Run database migrations:
+    ```bash
+    npx prisma migrate dev
+
+6. Start the server:
+    ```bash
+    npm run dev
