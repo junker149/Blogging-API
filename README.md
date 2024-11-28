@@ -40,4 +40,6 @@ A brief description of your project:
    ```bash
    git clone https://github.com/junker149/Blogging-API.git
 
-2. Navigate
+2. Navigate to project directory:
+    ```bash
+    cd Blogging-API
