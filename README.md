@@ -43,3 +43,12 @@ A brief description of your project:
 2. Navigate to project directory:
     ```bash
     cd Blogging-API
+
+3. Install dependencies:
+    ```bash
+    npm install
+
+4. Setup environment variables:
+Create a .env file in the root directory and add:
+    
+    
