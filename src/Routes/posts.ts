@@ -2,10 +2,9 @@ import express from 'express';
 import { post } from '../validation/postSchema';
 const Router = express.Router();
 import Client from '../client';
-import { number, string } from 'zod';
 
 Router.post('/posts', async (req, res) => {
-    const {title, content, category, tags} = req.body;
+    const { title, content, category, tags } = req.body;
     const parsedBody = post.safeParse(req.body);
 
     if (!parsedBody.success) {
@@ -13,17 +12,17 @@ Router.post('/posts', async (req, res) => {
             message: 'Bad request'
         })
     }
-    else{
-        try{
+    else {
+        try {
             const newPost = await Client.posts.create({
-                data: {title, content, category, tags}
-            });    
+                data: { title, content, category, tags }
+            });
             res.status(201).json({
                 message: 'Created',
                 newPost
             })
         }
-        catch(err){
+        catch (err) {
             res.status(500).json({
                 message: 'Internal Server Error'
             });
@@ -34,14 +33,14 @@ Router.post('/posts', async (req, res) => {
 Router.get('/posts/:id?', async (req, res) => {
     const id = req.params.id;
     const filter = req.query.term as string | undefined;
-    try{
+    try {
         if (filter) {
             const posts = await Client.posts.findMany({
                 where: {
                     OR: [
                         { title: { contains: filter } },
                         { content: { contains: filter } },
-                        { tags: { has: filter} }
+                        { tags: { has: filter } }
                     ]
                 }
             })
@@ -57,7 +56,7 @@ Router.get('/posts/:id?', async (req, res) => {
                 }
             })
 
-            if (!post){
+            if (!post) {
                 res.status(404).json({
                     message: 'Not Found'
                 });
@@ -78,19 +77,91 @@ Router.get('/posts/:id?', async (req, res) => {
             });
         }
     }
-    catch(err){
+    catch (err) {
         console.log(err);
         res.status(500).json({
             message: 'Internal Server Error'
         });
     }
-})
+});
 
-Router.get('/posts', async (req, res) => {
-    const filter = req.query.term;
-    if (!filter) {
-        res.status
+Router.put('/posts/:id?', async (req, res) => {
+    const id = req.params.id;
+    const { title, content, category, tags } = req.body;
+    const parsedBody = post.safeParse(req.body);
+    let Post;
+
+    if (!parsedBody.success) {
+        res.status(400).json({
+            message: 'Bad request'
+        })
+    }
+    else {
+        try {
+            if (id) {
+                Post = await Client.posts.update({
+                    where: {
+                        id: parseInt(id)
+                    },
+                    data: { title, content, category, tags }
+                })
+                res.status(200).json({
+                    message: 'OK',
+                    Post
+                })
+            }
+            else {
+                res.status(400).json({
+                    message: 'id required'
+                })
+            }
+        } catch (err) {
+            if (!Post) {
+                res.status(404).json({
+                    message: 'Not Found'
+                })
+            }
+            else {
+                console.log(err);
+                res.status(500).json({
+                    message: "Internal Server Error"
+                })
+            }
+        }
     }
 })
+
+Router.delete('/posts/:id?', async (req, res) => {
+    const id = req.params.id;
+    let post;
+    try {
+        if (id) {
+            post = await Client.posts.delete({
+                where: {
+                    id: parseInt(id)
+                }
+            });
+            res.status(204).json({
+                message: 'No Content'
+            });
+        }
+        else {
+            res.status(400).json({
+                message: "id required"
+            });
+        }
+    } catch (err) {
+        if (!post) {
+            res.status(404).json({
+                message: 'Not Found'
+            })
+        }
+        else {
+            res.status(500).json({
+                message: 'Internal Server Error'
+            });
+        }
+    }
+});
 
 export default Router;
