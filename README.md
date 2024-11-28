@@ -1,7 +1,5 @@
 # Blogging-API
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
 ## 📖 About the Project
 
 A brief description of your project:  
