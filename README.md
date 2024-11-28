@@ -7,6 +7,8 @@ A brief description of your project:
 - I built it for me, to help me learn the technologies I used in this project.And you can *obviously* use this API for your usecase.
 - To Learn.
 
+Project taken from https://roadmap.sh/projects/blogging-platform-api
+
 ---
 
 ## 🛠️ Features
