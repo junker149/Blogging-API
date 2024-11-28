@@ -20,5 +20,5 @@ model posts{
   category String
   tags String[]
   createdAt DateTime @default(now())
-  uodatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
